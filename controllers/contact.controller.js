@@ -22,7 +22,51 @@ const createContact = async (req, res) => {
 // @desc    Get all users contacts
 // @access  Private
 
+const getContacts = async (req, res) => {
+    try {
+        const sql = "SELECT * FROM contacts";
+        db.query(sql, (err, result) => {
+            if(err) return console.log(err);
+            res.send({
+                success: true,
+                message: "Contacts Fetched Successfully",
+                data: result
+            })
+        })
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server Error');
+    }
+}
 
+
+
+//@route   GET api/contacts/:id
+//@desc    Get contact by ID
+//@access  Private
+const getContact = async (req, res) => {
+    try {
+        const sql = "SELECT * FROM contacts WHERE id = ?";
+        db.query(sql, [req.params.id], (err, result) => {
+            if(err) return console.log(err);
+            if(result.length === 0){
+                return res.status(404).send({
+                    success: false,
+                    message: "Contact Not Found"
+                })
+            }
+            
+            res.send({
+                success: true,
+                message: "Contact Fetched Successfully",
+                data: result
+            })
+        })
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server Error');
+    }
+}
 
 
 
@@ -33,4 +77,4 @@ const createContact = async (req, res) => {
 
 
 
-module.exports = {createContact}
+module.exports = {createContact, getContacts, getContact}
