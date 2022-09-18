@@ -1,15 +1,17 @@
 const express = require('express');
 const cors = require('cors');
+const db = require('./utils/dbConnection');
 const app = express();
 
-
+const port = process.env.PORT || 5000;
 
 /* Init MiddleWares  */
-app.use(express.json({ extended: false }));
+app.use(express.json());
 app.use(cors())
 
 
-
+ /* Listen PORT */
+ app.listen(port, () => console.log(`Server started on port ${port}`));
 
 /* Init Routes */
 app.get("/", (req, res) =>{

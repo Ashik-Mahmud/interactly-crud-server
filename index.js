@@ -1,6 +1,4 @@
 const app = require('./app');
-const port = process.env.PORT || 5000;
-
 
 
 
@@ -14,10 +12,17 @@ app.use("/api/contact", contactRouter);
 
 
 
-/* Listen PORT */
-app.listen(port, () => console.log(`Server started on port ${port}`));
+
 
 /* Validations Routes */
 app.use("*", (req, res) =>{
     res.send({message: "No Routes Found."})
 })
+
+/* Global Error Handling */
+process.on('unhandledRejection', (err) => {
+    if(err){
+        app.close(() => process.exit(1));
+        console.log(`Logged Error: ${err}`);
+    }
+})  
