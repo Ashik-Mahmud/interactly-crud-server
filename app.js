@@ -9,9 +9,6 @@ app.use(express.json({ extended: false }));
 app.use(cors())
 
 
-/* Init Routes */
-
-
 
 
 /* Init Routes */
@@ -21,11 +18,5 @@ app.get("/", (req, res) =>{
         message: "Welcome to the API"
     })
 })
-
-/* Validations Routes */
-app.use("*", (req, res) =>{
-    res.send({message: "No Routes Found."})
-})
-
 
 module.exports = app;
