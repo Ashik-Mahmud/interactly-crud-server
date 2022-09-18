@@ -55,7 +55,7 @@ const getContact = async (req, res) => {
                     message: "Contact Not Found"
                 })
             }
-            
+
             res.send({
                 success: true,
                 message: "Contact Fetched Successfully",
@@ -74,7 +74,60 @@ const getContact = async (req, res) => {
 // @desc    Update contact
 // @access  Private
 
+const updateContact = async (req, res) => {
+    try {
+        const sql = "UPDATE contacts SET first_name = ?, last_name = ?, email = ?, mobile_number = ? WHERE id = ?";
+        db.query(sql, [req.body.first_name, req.body.last_name, req.body.email, req.body.mobile_number, req.params.id], (err, result) => {
+            if(err) return console.log(err);
+            if(result.affectedRows === 0){
+                return res.status(404).send({
+                    success: false,
+                    message: "Contact Not Found"
+                })
+            }
+
+            res.send({
+                success: true,
+                message: "Contact Updated Successfully",
+                data: result
+            })
+        })
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server Error');
+    }
+}
+
+
+// @route   DELETE api/contacts/:id
+// @desc    Delete contact
+// @access  Private
+const deleteContact = async (req, res) => {
+    try {
+        const sql = "DELETE FROM contacts WHERE id = ?";
+        db.query(sql, [req.params.id], (err, result) => {
+            if(err) return console.log(err);
+            if(result.affectedRows === 0){
+                return res.status(404).send({
+                    success: false,
+                    message: "Contact Not Found"
+                })
+            }
+
+            res.send({
+                success: true,
+                message: "Contact Deleted Successfully",
+                data: result
+            })
+        })
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server Error');
+    }
+}
 
 
 
-module.exports = {createContact, getContacts, getContact}
+
+
+module.exports = {createContact, getContacts, getContact, updateContact, deleteContact}
